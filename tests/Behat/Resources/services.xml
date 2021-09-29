@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+This file is part of package:
+Sylius Size Chart Plugin
+
+@copyright MADCODERS Team (www.madcoders.co)
+@licence For the full copyright and license information, please view the LICENSE
+
+Architects of this package:
+@author Leonid Moshko <l.moshko@madcoders.pl>
+@author Piotr Lewandowski <p.lewandowski@madcoders.pl>
+-->
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+
+        <defaults public="true" />
+
+        <!-- Setup Context  -->
+        <service id="madcoders.sylius_sizechart.context.setup.size_chart_consent"
+                 class="Tests\Madcoders\SyliusSizechartPlugin\Behat\Context\Setup\SizeChartContext">
+            <argument type="service" id="madcoders.sylius_sizechart.page.admin.sizechart.sylius_sizechart_index" />
+            <argument type="service" id="madcoders_sizechart.repository.size_chart" />
+            <argument type="service"  id="madcoders_sizechart.size_chart_pdf_uploader" />
+            <argument type="service" id="behat.mink.parameters" />
+        </service>
+
+        <!-- UI Context  -->
+        <service id="madcoders_sylius_sizechart.context.ui.shop.credits"
+                 class="Tests\Madcoders\SyliusSizechartPlugin\Behat\Context\Ui\Shop\CreditsContext">
+            <argument type="service" id="madcoders_sylius_sizechart.page.shop.credits" />
+        </service>
+
+        <service id="madcoders.sylius_sizechart.context.ui.admin.size_chart_consent"
+                 class="Tests\Madcoders\SyliusSizechartPlugin\Behat\Context\Ui\Admin\SizeChartContext">
+            <argument type="service" id="madcoders.sylius_sizechart.page.admin.sizechart.sylius_sizechart_index" />
+            <argument type="service" id="madcoders.sylius_sizechart.page.admin.sizechart.sylius_sizechart_create" />
+            <argument type="service" id="madcoders.sylius_sizechart.page.admin.sizechart.sylius_sizechart_update" />
+            <argument type="service" id="madcoders_sizechart.repository.size_chart" />
+            <argument type="service" id="sylius.behat.current_page_resolver" />
+            <argument type="service" id="sylius.behat.shared_storage" />
+        </service>
+
+        <!--  Pages  -->
+        <service id="madcoders_sylius_sizechart.page.shop.credits"
+                 class="Tests\Madcoders\SyliusSizechartPlugin\Behat\Page\Shop\CreditsPage"
+                 parent="sylius.behat.symfony_page" public="false" />
+
+        <service id="madcoders.sylius_sizechart.page.admin.sizechart.sylius_sizechart_index"
+                 class="Tests\Madcoders\SyliusSizechartPlugin\Behat\Page\Admin\SizeChart\IndexPage"
+                 parent="sylius.behat.page.admin.crud.index" public="false" >
+            <argument type="string">madcoders_sizechart_admin_size_chart_index</argument>
+        </service>
+
+        <service id="madcoders.sylius_sizechart.page.admin.sizechart.sylius_sizechart_create"
+                 class="Tests\Madcoders\SyliusSizechartPlugin\Behat\Page\Admin\SizeChart\CreatePage"
+                 parent="sylius.behat.page.admin.crud.create" public="false">
+            <argument type="string">madcoders_sizechart_admin_size_chart_create</argument>
+        </service>
+
+        <service id="madcoders.sylius_sizechart.page.admin.sizechart.sylius_sizechart_update"
+                 class="Tests\Madcoders\SyliusSizechartPlugin\Behat\Page\Admin\SizeChart\UpdatePage"
+                 parent="sylius.behat.page.admin.crud.update" public="false">
+            <argument type="string">madcoders_sizechart_admin_size_chart_update</argument>
+        </service>
+
+    </services>
+</container>

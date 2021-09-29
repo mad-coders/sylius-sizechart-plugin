@@ -1,0 +1,31 @@
+#
+# This file is part of package:
+# Sylius Size Chart Plugin
+#
+# @copyright MADCODERS Team (www.madcoders.co)
+# @licence For the full copyright and license information, please view the LICENSE
+#
+# Architects of this package:
+# @author Leonid Moshko <l.moshko@madcoders.pl>
+# @author Piotr Lewandowski <p.lewandowski@madcoders.pl>
+#
+
+madcoders_sizechart_admin_size_chart:
+  resource: |
+    alias: madcoders_sizechart.size_chart
+    section: admin
+    templates: "@SyliusAdmin\\Crud"
+    redirect: update
+    grid: madcoders_sizechart_admin_size_chart
+    vars:
+        all:
+            subheader: madcoders_sizechart.ui.size_charts_show
+            templates:
+              form: "@MadcodersSyliusSizechartPlugin/Admin/Sizechart/Item/_form.html.twig"
+        index:
+            icon: 'crop'
+  type: sylius.resource
+
+madcoders_sizechart_admin_size_chart_criteria_attribute_option:
+  path: /size-charts/criteria-form/attribute-options/{attributeCode}
+  controller: 'Madcoders\SyliusSizechartPlugin\Controller\AttributeOptionCriteriaAction'

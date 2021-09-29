@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <defaults autoconfigure="true" autowire="true" public="true" />
+
+        <!-- size chart option criteria provider -->
+        <service id="madcoders.sylius_size_chart_plugin.options_provider.attribute"
+                 class="Madcoders\SyliusSizechartPlugin\Form\Provider\AttributeOptionsProvider">
+            <argument type="service" id="sylius.repository.product_attribute_value" />
+            <argument type="service" id="sylius.repository.product_attribute" />
+        </service>
+
+        <!-- size chart option criteria form view factory -->
+        <service id="madcoders.sylius_size_chart_plugin.factory.attribute_option_criteria"
+                 class="Madcoders\SyliusSizechartPlugin\Form\Factory\AttributeOptionCriteriaFactory">
+            <argument type="service" id="sylius.repository.product_attribute" />
+            <argument type="service" id="form.factory" />
+        </service>
+
+        <!-- size chart form -->
+        <service id="madcoders.sylius_size_chart_plugin.form.type.size_chart_type"
+                 class="Madcoders\SyliusSizechartPlugin\Form\Type\SizeChartType">
+            <tag name="form.type" />
+        </service>
+
+        <!-- size chart translation form  -->
+        <service id="madcoders.sylius_size_chart_plugin.form.type.size_chart_translation_type"
+                 class="Madcoders\SyliusSizechartPlugin\Form\Type\SizeChartTranslationType">
+            <argument type="string">Madcoders\SyliusSizechartPlugin\Entity\SizeChartTranslation</argument>
+            <tag name="form.type"/>
+        </service>
+
+        <!-- size chart search criteria form -->
+        <service id="madcoders.sylius_size_chart_plugin.form.type.size_chart_criteria"
+                 class="Madcoders\SyliusSizechartPlugin\Form\Type\SizeChartCriteriaType">
+            <argument type="service" id="sylius.repository.product_attribute" />
+            <tag name="form.type" />
+        </service>
+
+        <!-- size chart attribute option criteria type -->
+        <service id="madcoders.sylius_size_chart_plugin.form.type.size_chart_attribute_criteria"
+                 class="Madcoders\SyliusSizechartPlugin\Form\Type\AttributeOptionCriteriaType">
+            <argument type="service" id="madcoders.sylius_size_chart_plugin.options_provider.attribute" />
+            <argument type="service" id="form.choice_list_factory" />
+            <argument type="service" id="translator" />
+            <tag name="form.type" />
+        </service>
+    </services>
+</container>

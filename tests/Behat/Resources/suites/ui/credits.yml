@@ -1,0 +1,8 @@
+default:
+    suites:
+        madcoders_credits:
+            contexts:
+                - madcoders_sylius_sizechart.context.ui.shop.credits
+
+            filters:
+                tags: "@madcoders_credits"

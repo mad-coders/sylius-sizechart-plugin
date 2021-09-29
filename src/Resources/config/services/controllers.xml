@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+This file is part of package:
+Sylius Size Chart Plugin
+
+@copyright MADCODERS Team (www.madcoders.co)
+@licence For the full copyright and license information, please view the LICENSE
+
+Architects of this package:
+@author Leonid Moshko <l.moshko@madcoders.pl>
+@author Piotr Lewandowski <p.lewandowski@madcoders.pl>
+-->
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="Madcoders\SyliusSizechartPlugin\Controller\CreditsController" autowire="true" autoconfigure="true" public="true" />
+        <service id="Madcoders\SyliusSizechartPlugin\Controller\AttributeOptionCriteriaAction" autowire="true" autoconfigure="true" public="true">
+            <argument type="service" id="madcoders.sylius_size_chart_plugin.factory.attribute_option_criteria" />
+            <argument type="service" id="twig" />
+        </service>
+    </services>
+</container>

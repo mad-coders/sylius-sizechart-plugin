@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+This file is part of package:
+Sylius Size Chart Plugin
+
+@copyright MADCODERS Team (www.madcoders.co)
+@licence For the full copyright and license information, please view the LICENSE
+
+Architects of this package:
+@author Leonid Moshko <l.moshko@madcoders.pl>
+@author Piotr Lewandowski <p.lewandowski@madcoders.pl>
+-->
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+        <service id="madcoders_sizechart.size_chart_plugin.twig.size_chart_view_extension"
+                 class="Madcoders\SyliusSizechartPlugin\Twig\SizeChartViewExtension">
+            <argument type="service" id="twig" />
+            <argument type="service" id="madcoders_sizechart.matcher.live_multi_matcher" />
+            <tag name="twig.extension"/>
+        </service>
+
+    </services>
+</container>

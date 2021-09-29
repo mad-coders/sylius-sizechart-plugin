@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!--
+This file is part of package:
+Sylius Size Chart Plugin
+
+@copyright MADCODERS Team (www.madcoders.co)
+@licence For the full copyright and license information, please view the LICENSE
+
+Architects of this package:
+@author Leonid Moshko <l.moshko@madcoders.pl>
+@author Piotr Lewandowski <p.lewandowski@madcoders.pl>
+-->
+
+<container xmlns="http://symfony.com/schema/dic/services" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <imports>
+        <import resource="services/**/*.xml" />
+    </imports>
+
+    <services>
+
+        <!-- Menu Listener -->
+        <service id="madcoders_sizechart.size_chart_plugin.ui.menu.admin_menu_listener"
+                 class="Madcoders\SyliusSizechartPlugin\Ui\Menu\AdminMenuListener">
+            <tag name="kernel.event_listener" event="sylius.menu.admin.main" method="addAdminMenuItems"/>
+        </service>
+
+        <!-- Size Chart Matcher -->
+        <service id="madcoders_sizechart.matcher.validator" class="Madcoders\SyliusSizechartPlugin\Matcher\SizeChartValidator" />
+        <service id="madcoders_sizechart.matcher.live_matcher" class="Madcoders\SyliusSizechartPlugin\Matcher\LiveMatcher">
+            <argument type="service" id="madcoders_sizechart.repository.size_chart" />
+            <argument type="service" id="madcoders_sizechart.matcher.validator" />
+        </service>
+        <service id="madcoders_sizechart.matcher.live_multi_matcher" class="Madcoders\SyliusSizechartPlugin\Matcher\LiveMultiMatcher">
+            <argument type="service" id="madcoders_sizechart.repository.size_chart" />
+            <argument type="service" id="madcoders_sizechart.matcher.validator" />
+        </service>
+
+        <!-- Size Chart Pdf Uploader -->
+        <service id="madcoders_sizechart.size_chart_pdf_uploader"
+                 class="Madcoders\SyliusSizechartPlugin\Uploader\SizeChartPdfUploader">
+            <argument type="service">
+                <service class="Gaufrette\Filesystem">
+                    <argument>size_chart</argument>
+                    <factory service="knp_gaufrette.filesystem_map" method="get" />
+                </service>
+            </argument>
+            <argument type="service" id="Madcoders\SyliusSizechartPlugin\Generator\SizeChartPdfPathGeneratorInterface" />
+        </service>
+
+        <service id="Madcoders\SyliusSizechartPlugin\Uploader\SizeChartPdfUploaderInterface"
+                 alias="madcoders_sizechart.size_chart_pdf_uploader" />
+
+        <service
+                id="Madcoders\SyliusSizechartPlugin\Generator\SizeChartPdfPathGeneratorInterface"
+                class="Madcoders\SyliusSizechartPlugin\Generator\SizeChartPdfPathGenerator"
+        />
+
+        <service id="madcoders_sizechart.size_chart_pdf_upload"
+                 class="Madcoders\SyliusSizechartPlugin\EventListener\SizeChartPdfUploadListener">
+            <argument type="service" id="madcoders_sizechart.size_chart_pdf_uploader" />
+            <tag name="kernel.event_listener" event="madcoders_sizechart.size_chart.pre_create" method="uploadSizeChartPdf" />
+            <tag name="kernel.event_listener" event="madcoders_sizechart.size_chart.pre_update" method="uploadSizeChartPdf" />
+        </service>
+
+        <!-- Admin js -->
+        <service id="madcoders_sizechart.admin.layout.javascripts"
+            class="Sylius\Bundle\UiBundle\Block\BlockEventListener">
+            <argument type="string">@MadcodersSyliusSizechartPlugin/Admin/Sizechart/Item/_javascript.html.twig</argument>
+            <tag name="kernel.event_listener" event="sonata.block.event.sylius.admin.layout.javascripts" method="onBlockEvent" />
+        </service>
+
+    </services>
+
+</container>

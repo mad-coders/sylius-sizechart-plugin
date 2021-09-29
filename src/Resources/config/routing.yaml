@@ -1,0 +1,21 @@
+#
+# This file is part of package:
+# Sylius Size Chart Plugin
+#
+# @copyright MADCODERS Team (www.madcoders.co)
+# @licence For the full copyright and license information, please view the LICENSE
+#
+# Architects of this package:
+# @author Leonid Moshko <l.moshko@madcoders.pl>
+# @author Piotr Lewandowski <p.lewandowski@madcoders.pl>
+#
+
+madcoders_sylius_sizechart_plugin_shop:
+    resource: "@MadcodersSyliusSizechartPlugin/Resources/config/routing/shop_routing.yaml"
+    prefix: /{_locale}
+    requirements:
+        _locale: ^[a-z]{2}(?:_[A-Z]{2})?$
+
+madcoders_sylius_sizechart_plugin_admin:
+    resource: "@MadcodersSyliusSizechartPlugin/Resources/config/routing/admin_routing.yaml"
+    prefix: /admin

@@ -1,0 +1,4 @@
+suites:
+    main:
+        namespace: Madcoders\SyliusSizechartPlugin
+        psr4_prefix: Madcoders\SyliusSizechartPlugin

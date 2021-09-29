@@ -1,0 +1,2 @@
+madcoders_sylius_sizechart_plugin:
+    resource: "@MadcodersSyliusSizechartPlugin/Resources/config/routing.yaml"

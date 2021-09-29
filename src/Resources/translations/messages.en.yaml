@@ -1,0 +1,31 @@
+#
+# This file is part of package:
+# Sylius Size Chart Plugin
+#
+# @copyright MADCODERS Team (www.madcoders.co)
+# @licence For the full copyright and license information, please view the LICENSE
+#
+# Architects of this package:
+# @author Leonid Moshko <l.moshko@madcoders.pl>
+# @author Piotr Lewandowski <p.lewandowski@madcoders.pl>
+#
+
+madcoders_sizechart:
+    ui:
+        size_charts: 'Size Charts'
+        size_charts_show: 'Show size charts'
+        new_size_chart: 'Created new size chart'
+        edit_size_chart: 'Edit size chart'
+    admin:
+        size_chart:
+            info_area_text: 'After saving, the following file will be saved'
+            form:
+                enabled: 'Enabled'
+                position: 'Position'
+                name: 'Name'
+                description: 'Description'
+                download: 'Download'
+
+    form:
+        file:
+            type:

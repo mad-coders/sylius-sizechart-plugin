@@ -1,0 +1,83 @@
+{#
+# This file is part of package:
+# Sylius Size Chart Plugin
+#
+# @copyright MADCODERS Team (www.madcoders.co)
+# @licence For the full copyright and license information, please view the LICENSE
+#
+# Architects of this package:
+# @author Leonid Moshko <l.moshko@madcoders.pl>
+# @author Piotr Lewandowski <p.lewandowski@madcoders.pl>
+#}
+
+<script data-attribute-options-criteria-url="{{ path('madcoders_sizechart_admin_size_chart_criteria_attribute_option', { 'attributeCode': '__attributeCode__' }) }}">
+  (function () {
+    const switchSelector = '#size_chart_criteria_attributes input[type="checkbox"]';
+
+    const onSwitch = function(e) {
+      const element = $(e.delegateTarget);
+      const state = element.is(':checked');
+      const attributeCode = element.get(0).value
+      const optionsSelect = findOptionsField(attributeCode);
+      const form = $('form[name="size_chart"]');
+
+      if (optionsSelect) {
+        const optionsSelectContainer = optionsSelect.parent('.field').first();
+        state ? show(optionsSelectContainer.show()) : hide(optionsSelectContainer);
+      } else {
+        form.addClass('loading');
+        $.get(url(attributeCode), function (response) {
+          const prevSwitch = prevOptionSelect(element);
+          response = response.replace(/size_chart_attribute_option_prototype_____/g, 'size_chart[criteria][attribute'+attributeCode+']');
+          if (prevSwitch) {
+            $(response).insertAfter(prevSwitch);
+          } else {
+            $('#size_chart_criteria').append(response);
+          }
+          form.removeClass('loading');
+        });
+      }
+    };
+
+    const prevOptionSelect = function (element) {
+      const prevElement = element.parents('.field').first().prev('.field').first();
+      if (!prevElement.is('.field')) {
+        return null;
+      }
+
+      if (prevElement.find('input[type="checkbox"]:checked').is('input')) {
+        return findOptionsField(prevElement.find('input[type="checkbox"]').val()).parent('.field');
+      } else {
+        return prevOptionSelect(prevElement.find('input[type="checkbox"]'));
+      }
+    };
+
+    const url = function (attributeCode) {
+      return $('[data-attribute-options-criteria-url]')
+        .attr('data-attribute-options-criteria-url')
+        .replace(/__attributeCode__/, attributeCode);
+    };
+
+    const show = function (element) {
+      $(element)
+        .fadeIn(200);
+    };
+
+    const hide = function (element) {
+      $(element).fadeOut(300);
+    };
+
+    const findOptionsField = function(attributeCode) {
+      const selector = '#size_chart_criteria select[name="size_chart[criteria][attribute'+attributeCode+']"]';
+      const select = $(selector);
+
+      return select.is('select') ? select : null;
+    };
+
+    const bindEvents = function() {
+      $(switchSelector).change(onSwitch);
+    };
+
+    bindEvents();
+  })(jQuery);
+</script>
