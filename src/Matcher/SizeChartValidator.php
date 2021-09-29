@@ -22,6 +22,16 @@ use Sylius\Component\Product\Model\ProductAttributeInterface;
 
 final class SizeChartValidator implements SizeChartValidatorInterface
 {
+    /** @var string */
+    private $localeCode;
+
+    public function __construct(
+        string $localeCode
+    )
+    {
+        $this->localeCode = $localeCode;
+    }
+
     public function isValidForTheProduct(SizeChartInterface $sizeChart, ProductInterface $product): bool
     {
         $criteria = $sizeChart->getCriteria();
@@ -32,7 +42,7 @@ final class SizeChartValidator implements SizeChartValidatorInterface
         foreach($attributeCodes as $attributeCode) {
             /** @var string $value */
             $value = $criteria['attribute' . $attributeCode ] ?? '';
-            $productAttributeValue = $product->getAttributeByCodeAndLocale($attributeCode, 'en_US');
+            $productAttributeValue = $product->getAttributeByCodeAndLocale($attributeCode, $this->localeCode);
 
             if (!$productAttributeValue || $productAttributeValue->getValue() !== $value) {
                 return false;

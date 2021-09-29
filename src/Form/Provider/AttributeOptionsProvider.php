@@ -29,13 +29,18 @@ class AttributeOptionsProvider implements AttributeOptionsProviderInterface
     /** @var RepositoryInterface  */
     private $productAttributeRepository;
 
+    /** @var string */
+    private $localeCode;
+
     public function __construct(
         ProductAttributeValueRepository $productAttributeValueRepository,
-        RepositoryInterface $productAttributeRepository
+        RepositoryInterface $productAttributeRepository,
+        string $localeCode
     )
     {
         $this->productAttributeValueRepository = $productAttributeValueRepository;
         $this->productAttributeRepository = $productAttributeRepository;
+        $this->localeCode = $localeCode;
     }
 
     public function provideOptionsByAttributeCode(string $code): array
@@ -49,7 +54,7 @@ class AttributeOptionsProvider implements AttributeOptionsProviderInterface
         $qb->andWhere('av.attribute = :attribute');
         $qb->andWhere('av.localeCode = :localeCode');
         $qb->setParameter(':attribute', $attribute->getId());
-        $qb->setParameter(':localeCode', 'en_US');
+        $qb->setParameter(':localeCode', $this->localeCode);
 
         $choices = [];
         foreach($qb->getQuery()->getResult() as $value) {

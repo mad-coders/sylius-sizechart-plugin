@@ -8,6 +8,7 @@
                  class="Madcoders\SyliusSizechartPlugin\Form\Provider\AttributeOptionsProvider">
             <argument type="service" id="sylius.repository.product_attribute_value" />
             <argument type="service" id="sylius.repository.product_attribute" />
+            <argument>%locale%</argument>
         </service>
 
         <!-- size chart option criteria form view factory -->
