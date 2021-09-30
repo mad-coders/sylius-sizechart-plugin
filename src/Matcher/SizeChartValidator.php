@@ -17,11 +17,23 @@ declare(strict_types=1);
 namespace Madcoders\SyliusSizechartPlugin\Matcher;
 
 use Madcoders\SyliusSizechartPlugin\Entity\SizeChartInterface;
+use Sylius\Component\Attribute\AttributeType\IntegerAttributeType;
+use Sylius\Component\Attribute\AttributeType\SelectAttributeType;
+use Sylius\Component\Attribute\AttributeType\TextAttributeType;
 use Sylius\Component\Core\Model\ProductInterface;
-use Sylius\Component\Product\Model\ProductAttributeInterface;
 
 final class SizeChartValidator implements SizeChartValidatorInterface
 {
+    /** @var string */
+    private $localeCode;
+
+    public function __construct(
+        string $localeCode
+    )
+    {
+        $this->localeCode = $localeCode;
+    }
+
     public function isValidForTheProduct(SizeChartInterface $sizeChart, ProductInterface $product): bool
     {
         $criteria = $sizeChart->getCriteria();
@@ -29,13 +41,39 @@ final class SizeChartValidator implements SizeChartValidatorInterface
         /** @var string[] $attributeCodes */
         $attributeCodes = $criteria['attributes'] ?? [];
 
-        foreach($attributeCodes as $attributeCode) {
+        foreach ($attributeCodes as $attributeCode) {
             /** @var string $value */
-            $value = $criteria['attribute' . $attributeCode ] ?? '';
-            $productAttributeValue = $product->getAttributeByCodeAndLocale($attributeCode, 'en_US');
+            $value = $criteria['attribute' . $attributeCode] ?? '';
+            $productAttributeValue = $product->getAttributeByCodeAndLocale($attributeCode, $this->localeCode);
 
-            if (!$productAttributeValue || $productAttributeValue->getValue() !== $value) {
+            if (!$productAttributeValue) {
                 return false;
+            }
+
+            if (!$productAttributeValue->getAttribute()) {
+                return false;
+            }
+
+            switch ($productAttributeValue->getAttribute()->getType()) {
+                case SelectAttributeType::TYPE:
+                    /** @var array|null $selectAttributeValue */
+                    $selectAttributeValue = $productAttributeValue->getValue();
+                    if (!is_array($selectAttributeValue)) {
+                        return false;
+                    }
+
+                    if (!in_array($value, $selectAttributeValue)) {
+                        return false;
+                    }
+
+                    break;
+                case IntegerAttributeType::TYPE:
+                case TextAttributeType::TYPE:
+                default:
+                    if ($productAttributeValue->getValue() !== $value) {
+                        return false;
+                    }
+                    break;
             }
         }
 
