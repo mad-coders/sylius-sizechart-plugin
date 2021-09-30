@@ -39,6 +39,11 @@ imports:
 madcoders_sylius_sizechart_plugin:
     resource: "@MadcodersSyliusSizechartPlugin/Resources/config/routing.yaml"
 ```
+5. Run migrations:
+```bash
+php bin/console doctrine:migrations:migrate
+```
+
 ## Development
 
 * See [How to contribute](docs/CONTRIBUTING.md)
