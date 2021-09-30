@@ -39,6 +39,11 @@ imports:
 madcoders_sylius_sizechart_plugin:
     resource: "@MadcodersSyliusSizechartPlugin/Resources/config/routing.yaml"
 ```
+5. Run migrations:
+```bash
+php bin/console doctrine:migrations:migrate
+```
+
 ## Development
 
 * See [How to contribute](docs/CONTRIBUTING.md)
@@ -55,3 +60,5 @@ Developed by [MADCODERS](https://madcoders.co)
 Architects of this package:  
 - [Piotr Lewandowski](https://github.com/plewandowski) 
 - [Leonid Moshko](https://github.com/LeoMoshko)
+
+<a href="https://www.buymeacoffee.com/madcoders" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
