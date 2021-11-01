@@ -12,72 +12,112 @@
 
 <script data-attribute-options-criteria-url="{{ path('madcoders_sizechart_admin_size_chart_criteria_attribute_option', { 'attributeCode': '__attributeCode__' }) }}">
   (function () {
-    const switchSelector = '#size_chart_criteria_attributes input[type="checkbox"]';
+      const switchSelector = '#size_chart_criteria_attributes input[type="checkbox"]';
 
     const onSwitch = function(e) {
-      const element = $(e.delegateTarget);
-      const state = element.is(':checked');
-      const attributeCode = element.get(0).value
+      const element = e.target;
+      const state = element.checked;
+      const attributeCode = element.value
       const optionsSelect = findOptionsField(attributeCode);
-      const form = $('form[name="size_chart"]');
+      const form = document.querySelector('form[name="size_chart"]');
+
+      if (!form) {
+        throw new Error('form cannot be found (selector: form[name="size_chart"])');
+      }
 
       if (optionsSelect) {
-        const optionsSelectContainer = optionsSelect.parent('.field').first();
-        state ? show(optionsSelectContainer.show()) : hide(optionsSelectContainer);
+        const optionsSelectContainer = optionsSelect.closest('.field');
+        state ? show(optionsSelectContainer) : hide(optionsSelectContainer);
       } else {
-        form.addClass('loading');
-        $.get(url(attributeCode), function (response) {
-          const prevSwitch = prevOptionSelect(element);
-          response = response.replace(/size_chart_attribute_option_prototype_____/g, 'size_chart[criteria][attribute'+attributeCode+']');
-          if (prevSwitch) {
-            $(response).insertAfter(prevSwitch);
-          } else {
-            $('#size_chart_criteria').append(response);
+        form.classList.add('loading');
+
+        const request = new XMLHttpRequest();
+        request.onreadystatechange = function () {
+          if (request.readyState > 3) {
+            if (request.status === 200) {
+              let response = request.response;
+              response = response.replace(/size_chart_attribute_option_prototype_____/g, 'size_chart[criteria][attribute'+attributeCode+']');
+              const prevSwitch = prevOptionSelect(element);
+              if (prevSwitch) {
+                prevSwitch.insertAdjacentHTML('afterend', response);
+              } else {
+                document.getElementById('size_chart_criteria').insertAdjacentHTML('beforeend',response);
+              }
+
+              form.classList.remove('loading');
+            } else {
+              console.error('child form cannot be fetched');
+            }
           }
-          form.removeClass('loading');
-        });
+        }
+
+        request.open('GET', url(attributeCode));
+        request.send();
       }
     };
 
     const prevOptionSelect = function (element) {
-      const prevElement = element.parents('.field').first().prev('.field').first();
-      if (!prevElement.is('.field')) {
+      let prevElement = element.closest('.field')
+      prevElement = findPrevSibling(prevElement, '.field');
+      if (!prevElement) {
         return null;
       }
 
-      if (prevElement.find('input[type="checkbox"]:checked').is('input')) {
-        return findOptionsField(prevElement.find('input[type="checkbox"]').val()).parent('.field');
+      if (prevElement.querySelector('input[type="checkbox"]:checked')) {
+        return findOptionsField(prevElement.querySelector('input[type="checkbox"]').value).closest('.field');
       } else {
-        return prevOptionSelect(prevElement.find('input[type="checkbox"]'));
+        return prevOptionSelect(prevElement.querySelector('input[type="checkbox"]'));
       }
     };
 
     const url = function (attributeCode) {
-      return $('[data-attribute-options-criteria-url]')
-        .attr('data-attribute-options-criteria-url')
+      return document.querySelector('[data-attribute-options-criteria-url]')
+        .getAttribute('data-attribute-options-criteria-url')
         .replace(/__attributeCode__/, attributeCode);
     };
 
-    const show = function (element) {
-      $(element)
-        .fadeIn(200);
+    const show = function(element) {
+      element.style.display = 'block';
     };
 
-    const hide = function (element) {
-      $(element).fadeOut(300);
+    const hide = function(element) {
+      element.style.display = 'none';
     };
 
     const findOptionsField = function(attributeCode) {
       const selector = '#size_chart_criteria select[name="size_chart[criteria][attribute'+attributeCode+']"]';
-      const select = $(selector);
 
-      return select.is('select') ? select : null;
+      return document.querySelector(selector);
+    };
+
+    const findPrevSibling = function(element, selector) {
+      while (element) {
+        element = element.previousElementSibling
+        if (element && element.matches(selector)) {
+          return element;
+        }
+      }
+
+      return null;
     };
 
     const bindEvents = function() {
-      $(switchSelector).change(onSwitch);
+      const switchCollection = document.querySelectorAll(switchSelector);
+      if (switchCollection.length > 0) {
+        switchCollection.forEach(function(element) {
+          element.addEventListener('change', onSwitch)
+        });
+      }
     };
 
-    bindEvents();
-  })(jQuery);
+    const init = function() {
+      bindEvents();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  })();
 </script>
