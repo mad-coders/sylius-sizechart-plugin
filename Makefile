@@ -27,11 +27,19 @@ frontend:
 behat:
 	APP_ENV=test vendor/bin/behat --colors --strict --no-interaction -vvv -f progress
 
+dropdb:
+	tests/Application/bin/console doctrine:database:drop --if-exists --force
+
+createdb:
+	tests/Application/bin/console doctrine:database:create --if-not-exists
+
 init: install backend frontend
+
+reinit: dropdb init
 
 ci: init phpstan psalm phpunit phpspec behat
 
-integration: init phpunit behat
+integration: init phpunit behate
 
 static: install phpspec phpstan psalm
 
