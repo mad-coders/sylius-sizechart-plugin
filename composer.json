@@ -73,11 +73,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Madcoders\\SyliusSizechartPlugin\\": "src/",
-            "Tests\\Madcoders\\SyliusSizechartPlugin\\": "tests/"
+            "Madcoders\\SyliusSizechartPlugin\\": "src/"
         }
     },
     "autoload-dev": {
+        "psr-4": {
+            "Tests\\Madcoders\\SyliusSizechartPlugin\\": "tests/"
+        },
         "classmap": [
             "tests/Application/Kernel.php"
         ]

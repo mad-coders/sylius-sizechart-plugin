@@ -33,7 +33,7 @@ dropdb:
 createdb:
 	tests/Application/bin/console doctrine:database:create --if-not-exists
 
-init: install backend frontend
+init: createdb install backend frontend
 
 reinit: dropdb init
 
