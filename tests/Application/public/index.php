@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Tests\Madcoders\SyliusSizechartPlugin\Application\Kernel;
+use Tests\Acme\SyliusExamplePlugin\Application\Kernel;
 use Symfony\Component\ErrorHandler\Debug;
 use Symfony\Component\HttpFoundation\Request;
 
