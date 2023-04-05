@@ -12,6 +12,7 @@
 | Sylius | ^1.12    |
 
 For Sylius 1.8 support check [Sylius Size Chart Plugin v1.0.x](https://github.com/mad-coders/sylius-sizechart-plugin/tree/1.0).
+For Sylius 1.9, 1.10 support check [Sylius Size Chart Plugin v1.1.x](https://github.com/mad-coders/sylius-sizechart-plugin/tree/1.1).
 
 ## Screenshots
 ![store front](./docs/img/size_chart_store_front.png)
